@@ -1,0 +1,21 @@
+{# tutorial/templates/people.html #}
+{% extends 'base.html' %}
+{% block content %}
+{% load render_table from django_tables2 %}
+
+
+<html>
+    <head>
+        <link rel="stylesheet" href="/static/django_tables2/themes/paleblue/css/screen.css" />
+    </head>
+    <body>
+    <center>
+        <h3>Maps</h3>
+        {% render_table maps %}
+        <br><br>
+        <h3>Mutators</h3>
+        {% render_table mutators %}
+    </center>
+    </body>
+</html>
+{% endblock %}

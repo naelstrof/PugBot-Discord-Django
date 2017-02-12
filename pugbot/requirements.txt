@@ -1,0 +1,4 @@
+discord.py
+pendulum
+asyncio
+aiohttp
