@@ -5,7 +5,7 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from django_tables2 import RequestConfig
-from api.models import Player, Mode, Pug, Map, Mutator, Pick_Order 
+from api.models import Player, Mode, Pug, Map, Mutator, Pick_Order, Game_ini 
 from rest_framework.decorators import api_view
 from api.tables import MapTable, MutatorTable
 #import duckduckgo
@@ -123,6 +123,46 @@ def redirect(request):
         RequestConfig(request).configure(maps)
         RequestConfig(request).configure(mutators) 
         return render(request, "redirect.html", {'maps': maps, 'mutators': mutators})
+
+
+@login_required
+def generate(request):
+    if request.method == 'POST':
+        if 1 == 1:
+            maps = Map.objects.all()       
+            mutators = Mutator.objects.all() 
+            with open("/home/pugbot/discord-pugbot/new-bot/djangobot/botapi/maps_muts/redirect.txt", "w") as f:
+                for utmap in maps:
+                    if not utmap.ini:
+                        name = "\"" + utmap.name[:-4] + "\""
+                        file_location = '/' + str(utmap.file)
+                        ini_md5 = "\"" + utmap.MD5 + "\""
+                        url = "\"ut4pugs.us/media{}".format(file_location) + "\""
+                        utmap.ini = "RedirectReferences=(PackageName={}".format(name) + ',' + 'PackageURLProtocol=' + "\"" + "https" + "\"" + ',PackageURL={}'.format(url) + ',PackageChecksum={})'.format(ini_md5)    
+                        utmap.save()
+                    else:
+                        pass
+                    f.write(utmap.ini + '\n')
+                for mut in mutators:
+                    if not mut.ini:
+                        name = "\"" + mut.name[:-4] + "\""
+                        file_location = '/' + str(mut.file)
+                        ini_md5 = "\"" + mut.MD5 + "\""
+                        url = "\"ut4pugs.us/media{}".format(file_location) + "\""
+                        mut.ini = "RedirectReferences=(PackageName={}".format(name) + ',' + 'PackageURLProtocol=' + "\"" + "https" + "\"" + ',PackageURL={}'.format(url) + ',PackageChecksum={})'.format(ini_md5)
+                        mut.save()
+                    else:
+                        pass
+                    f.write(mut.ini + '\n')
+            ini = Game_ini(file='/home/pugbot/discord-pugbot/new-bot/djangobot/botapi/maps_muts/redirect.txt')
+            ini.save()
+            return HttpResponseRedirect('https://ut4pugs.us/media/redirect.txt')    
+
+    return render(request, "ini_form.html")        
+            
+ 
+              
+                     
 
 @login_required
 def UploadView(request):

@@ -5,6 +5,7 @@ from . import views
 # We are adding a URL called /home
 urlpatterns = [
     url(r'^$', views.home, name='home'),
+    url(r'^generate/?$', views.generate, name='generate'),
     url(r'^upload/?$', views.UploadView, name='UploadView'),
     url(r'^home/?$', views.home, name='home'),
     url(r'^redirect/?$', views.redirect, name='redirect'),
