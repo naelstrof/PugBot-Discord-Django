@@ -56,13 +56,19 @@ class Player(models.Model):
         verbose_name_plural = 'Players'
 
 
+
+class Attachment(models.Model):
+    file = models.FileField(null=False)
+
+
+
 class Map(models.Model):
     name = models.CharField(max_length=39, primary_key=True)
     map_size = models.CharField(max_length=4, choices=Map_Size)
     mode = models.CharField(max_length=7, choices=Modes) 
     file = models.FileField(null=False, blank=False, default='')
-    link = models.URLField(default='https://ut4pugs.us/media/')
-    MD5 = models.CharField(max_length=32, null=True, blank=True) 
+    MD5 = models.CharField(max_length=32, null=True, blank=True)
+    ini = models.CharField(max_length=300, null=True, blank=True) 
     def __str__(self):
         return '{}'.format(self.name)
     class Meta:
@@ -74,9 +80,13 @@ def create_MD5(instance=None, new_MD5=None):
     if new_MD5 is not None:
         MD5 = new_MD5
     instance.MD5 = MD5
-    instance.save()    
-    #qs = Chapter.objects.filter(MD5=MD5).order_by("-id")  
-    #exists = qs.exists()
+    instance.save()  
+    name = "\"" + instance.name[:-4] + "\""
+    file_location = '/' + str(instance.file) 
+    ini_md5 = "\"" + MD5 + "\""
+    url = "\"ut4pugs.us/media{}".format(file_location) + "\""
+    instance.ini = "RedirectReferences=(PackageName={}".format(name) + ',' + 'PackageURLProtocol=' + "\"" + "https" + "\"" + ',PackageURL={}'.format(url) + ',PackageChecksum={})'.format(ini_md5)  
+    instance.save()
     return MD5
 
 def post_save_receiver(sender, instance, *args, **kwargs):
@@ -90,8 +100,8 @@ class Mutator(models.Model):
     name = models.CharField(max_length=39, primary_key=True, unique=True)
     description = models.CharField(max_length=50)
     file = models.FileField(null=False, blank=False, default='')
-    link = models.URLField(default='https://ut4pugs.us/media/')
     MD5 = models.CharField(max_length=32, null=True, blank=True)
+    ini = models.CharField(max_length=300, null=True, blank=True)
     def __str__(self):
         return '{}'.format(self.name)
     class Meta:

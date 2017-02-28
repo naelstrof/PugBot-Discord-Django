@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
-from django.http.response import HttpResponse
+from django.http.response import HttpResponse, HttpResponseRedirect
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
@@ -11,6 +11,9 @@ from api.tables import MapTable, MutatorTable
 #import duckduckgo
 from pprint import pprint
 import json
+from .forms import UploadForm
+from .models import Attachment
+
 
 
 PLASEP = '\N{SMALL ORANGE DIAMOND}'
@@ -120,6 +123,57 @@ def redirect(request):
         RequestConfig(request).configure(maps)
         RequestConfig(request).configure(mutators) 
         return render(request, "redirect.html", {'maps': maps, 'mutators': mutators})
+
+@login_required
+def UploadView(request):
+
+    if request.method == "POST":
+        form = UploadForm(request.POST, request.FILES)
+        if form.is_valid():
+            paks = []
+            for pak in form.cleaned_data['attachments']:
+                name = pak.name 
+                if name[:4] == 'CTF-' and name[-4:] == '.pak':
+                    mode = 'CTF'
+                    try:
+                        to_update = Map.objects.get(name=name, file=pak)  
+                        to_update.file = pak
+                        to_update.save()
+                    except:
+                        new_map = Map(name=name, map_size='5v5', mode=mode, file=pak)                  
+                        new_map.save()
+                elif name[:3] == 'DM-' and name[-4:] == '.pak':
+                    mode = 'DM'
+                    try:
+                        to_update = Map.objects.get(name=name)
+                        to_update.file = pak
+                        to_update.save()
+                    except:
+                        new_map = Map(name=name, map_size='5v5', mode=mode, file=pak)
+                        new_map.save()  
+                elif name[-4:] == '.pak':
+                    description = 'See the name'
+                    try:
+                        to_update = Mutator.objects.get(name=name,file=pak)
+                        to_update.file = pak
+                        to_update.save()
+                    except:
+                        new_mut = Mutator(name=name, description=description, file=pak)
+                        new_mut.save()               
+                     
+                else:
+                    pass                 
+            #return render(request, "form.html", {'paks': paks})    
+            return HttpResponseRedirect('/redirect/')
+    else:
+        form = UploadForm
+
+    contexts = {
+        'form': form,
+    }
+
+    return render(request, "form.html", contexts)
+
 
 
 @login_required(login_url="/login/")
