@@ -1,8 +1,10 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt
 from django.http.response import HttpResponse, HttpResponseRedirect
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.decorators import user_passes_test
 from django.http import JsonResponse
 from django_tables2 import RequestConfig
 from api.models import Player, Mode, Pug, Map, Mutator, Pick_Order, Game_ini 
@@ -21,6 +23,12 @@ MODSEP = '\N{SMALL BLUE DIAMOND}'
 OKMSG = '\N{OK HAND SIGN}'
 
 short_modes = {'ctf': '5v5', 'elim': '3v3'}
+
+
+def is_referee(user):
+    return user.groups.filter(name='Referees').exists()
+
+
 
 def get_open(maximum, pug_obj):
     open_spaces = []
@@ -163,8 +171,9 @@ def generate(request):
  
               
                      
-
+@csrf_exempt
 @login_required
+@user_passes_test(is_referee)
 def UploadView(request):
 
     if request.method == "POST":
@@ -189,8 +198,17 @@ def UploadView(request):
                         to_update.file = pak
                         to_update.save()
                     except:
+                        new_map = Map(name=name, map_size='3v3', mode=mode, file=pak)
+                        new_map.save() 
+                elif name[:3] == 'AS-' and name[-4:] == '.pak':
+                    mode = 'AS'
+                    try:
+                        to_update = Map.objects.get(name=name)
+                        to_update.file = pak
+                        to_update.save()
+                    except:
                         new_map = Map(name=name, map_size='5v5', mode=mode, file=pak)
-                        new_map.save()  
+                        new_map.save()
                 elif name[-4:] == '.pak':
                     description = 'See the name'
                     try:

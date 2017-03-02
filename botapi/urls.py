@@ -22,6 +22,7 @@ from django.contrib.auth import views
 from api.forms import LoginForm
 
 urlpatterns = [
+    url(r'^progressbarupload/', include('progressbarupload.urls')),
     url(r'', include('api.urls')),
     url(r'^multi/', include('twitchstreams.urls')),
     url(r'^admin/', include(admin.site.urls)),

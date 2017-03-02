@@ -34,9 +34,11 @@
                                             <li>
                                                 <a href="/generate">Generate</a>
                                             </li>
+                                            {% if request.user.is_staff %}
                                             <li>
                                                 <a href="/upload">Upload</a>
                                             </li>
+                                            {% endif %}
                                             <li>
                                                 <a href="/redirect">Redirect</a>
                                             </li>
