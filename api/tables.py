@@ -4,12 +4,12 @@ from api.models import Map, Mutator
 class MapTable(tables.Table):
     class Meta:
         model = Map
-        attrs = {"class": "paleblue"}
-        exclude = ("link", "mode")
+        attrs = {"class": "w3-table-all w3-responsive", "id": "myTable"}
+        exclude = ("link", "mode", "name", "map_size")
 
 class MutatorTable(tables.Table):
      class Meta:
         model = Mutator
-        attrs = {"class": "paleblue"}
-        exclude = ("link")
+        attrs = {"class": "w3-table-all w3-responsive", "id": "myTable"}
+        exclude = ("link", "name", "description")
 

@@ -1,25 +1,257 @@
-{% extends 'base.html' %}
-
 {% block content %}
-<iframe src="https://discordapp.com/widget?id=192460940409700352&theme=dark" width="350" height="500" allowtransparency="true" frameborder="0" align='right'></iframe>
-<img src="/static/flag.png" align='left' width='350' height='500'></img>
-<div class="container">
-    <div class="row">
-        <div class="jumbotron">
-             <center>
-            <h1>Streaming Test</h1>
-            <iframe src="https://player.twitch.tv/?channel=cafe_" frameborder="0" allowfullscreen="true" scrolling="no" height="500" width="700"></iframe><a href="https://www.twitch.tv/cafe_?tt_medium=live_embed&tt_content=text_link" style="padding:2px 0px 4px; display:block; width:345px; font-weight:normal; font-size:10px; text-decoration:underline;">Watch live video from cafe_ on www.twitch.tv</a> 
-              <iframe frameborder="0" 
-        scrolling="no" 
-        id="chat_embed" 
-        src="https://www.twitch.tv/cafe_/chat" 
-        height="700" 
-        width="500">
-</iframe>
-            </center>
-        </div>
-    </div>
+{% load static %}
+<!DOCTYPE html>
+<html>
+<title>UT4Pugs</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="shortcut icon" type="image/png" href="http://findicons.com/files/icons/1742/ecqlipse_2/128/unreal_tournament.png"/>
+<link rel="stylesheet" href="https://www.w3schools.com/lib/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+<style>
+body,h1,h2,h3,h4,h5,h6 {font-family: "Lato", sans-serif;}
+body, html {
+    height: 100%;
+    color: #262626;
+    line-height: 1.8;
+}
+
+/* Create a Parallax Effect */
+.bgimg-1, .bgimg-2, .bgimg-3 {
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+/* First image (Logo. Full height) */
+.bgimg-1 {
+    background-image: url("{% static 'Banner.jpg' %}");
+    min-height: 100%;
+}
+
+/* Second image (Portfolio) */
+.bgimg-2 {
+    background-image: url("{% static 'Skaarj.jpg' %}");
+    min-height: 400px;
+}
+
+/* Third image (Contact) */
+.bgimg-3 {
+    background-image: url("{% static 'vault.jpg' %}");
+    min-height: 400px;
+}
+
+.w3-wide {letter-spacing: 10px;}
+.w3-hover-opacity {cursor: pointer;}
+
+/* Turn off parallax scrolling for tablets and phones */
+@media only screen and (max-device-width: 1024px) {
+    .bgimg-1, .bgimg-2, .bgimg-3 {
+        background-attachment: scroll;
+    }
+}
+</style>
+<body>
+
+<!-- Navbar (sit on top) -->
+<div class="w3-top">
+  <div class="w3-bar w3-dark-grey" id="myNavbar">
+    <a class="w3-bar-item w3-button w3-hover-black w3-hide-medium w3-hide-large w3-opennav w3-right" href="javascript:void(0);" onclick="toggleFunction()" title="Toggle Navigation Menu">
+      <i class="fa fa-bars"></i>
+    </a>
+    <a href="#home" class="w3-bar-item w3-button"><i class="glyphicon glyphicon-home"></i>HOME</a>
+    <a href="#about" class="w3-bar-item w3-button w3-hide-small"><i class="fa fa-user"></i> ABOUT</a>
+    <a href="#portfolio" class="w3-bar-item w3-button w3-hide-small"><i class="fa fa-th"></i> SPOTLIGHT</a>
+    <a href="#contact" class="w3-bar-item w3-button w3-hide-small"><i class="glyphicon glyphicon-file"></i>SERVER ADMIN</a>
+    <a href="/redirect" class="w3-bar-item w3-button w3-hide-small"><i class="glyphicon glyphicon-arrow-right"></i>REDIRECT</a> 
+    {% if not user.is_authenticated %}
+    <a href="/login" class="w3-bar-item w3-button w3-hide-medium w3-right"><i class="glyphicon glyphicon-user"></i>LOGIN</a>
+    {% elif user.is_authenticated %}
+    <a href="/logout" class="w3-bar-item w3-button w3-hide-medium w3-right"><i class="glyphicon glyphicon-user"></i>LOGOUT</a>
+    <a href="/upload" class="w3-bar-item w3-button w3-hide-small"><i class="glyphicon glyphicon-refresh"></i>UPLOAD</a> 
+    {% endif %}
+  </div>
+
+  <!-- Navbar on small screens -->
+  <div id="navDemo" class="w3-bar-block w3-black w3-hide w3-hide-large w3-hide-medium">
+    <a href="#about" class="w3-bar-item w3-button" onclick="toggleFunction()">ABOUT</a>
+    <a href="#portfolio" class="w3-bar-item w3-button" onclick="toggleFunction()">SPOTLIGHT</a>
+    <a href="#contact" class="w3-bar-item w3-button" onclick="toggleFunction()">SERVER ADMIN</a> 
+    <a href="/redirect" class="w3-bar-item w3-button" onclick="toggleFunction()">REDIRECT</a>
+    {% if not user.is_authenticated %} 
+    <a href="/login" class="w3-bar-item w3-button w3-hide-small">LOGIN</a>
+    {% elif user.is_authenticated %}
+    <a href="https://ut4pugs.us/media/logout" class="w3-bar-item w3-button w3-hide-medium w3-right" target="_blank">LOGOUT</a>
+    {% endif %}
+
+  </div>
 </div>
 
+<!-- First Parallax Image with Logo Text -->
+<div class="bgimg-1 w3-display-container w3-opacity-min" id="home">
+  <div class="w3-display-middle" style="white-space:nowrap;">
+    <a href="https://discordapp.com/invite/BbPPCBx" target="_blank"><span class="w3-center w3-padding-xlarge w3-black w3-xlarge w3-wide w3-animate-opacity">JOIN <span class="w3-hide-small">THE</span> ACTION</span></a>
+  </div>
+</div>
+
+<!-- Container (About Section) -->
+<div class="w3-content w3-container w3-padding-64" id="about">
+  <h3 class="w3-center">ABOUT US</h3>
+  <p class="w3-center"><em>Just hardcore fans trying to promote the latest version of UT</em></p>
+  <p>We provide a better gaming experience via high performance servers, new and original UT map remakes, and most importantly organized matches. We do this all to help UT4 develop a thriving competitive community. We play pick up games regularly and stream often on Twitch. If you're tired of playing on low quality 60 tick servers with the same old maps with bots, then UT4PUGS is something you should check out. For more information, join us on <a href="https://discordapp.com/invite/BbPPCBx">Discord</a>
+  <div class="w3-row">
+    <div class="w3-col m6 w3-center w3-padding-large">
+      <img src="{% static 'flag.png' %}" class="w3-round w3-image w3-opacity w3-hover-opacity-off" alt="Photo of Me" width="500" height="333">
+    </div>
+
+    <!-- Hide this text on small devices -->
+    <div class="w3-col m6 w3-hide-small w3-padding-large">
+    <iframe src="https://discordapp.com/widget?id=192460940409700352&theme=dark" width="350" height="500" allowtransparency="true" frameborder="0" align='right'></iframe>
+    </div>
+  </div>
+ 
+</div>
+
+<div class="w3-row w3-center w3-dark-grey w3-padding-16">
+  <div class="w3-quarter w3-section">
+    <span class="w3-xlarge">15+</span><br>
+    CTF Maps
+  </div>
+  <div class="w3-quarter w3-section">
+    <span class="w3-xlarge">10+</span><br>
+    TDM Maps
+  </div>
+  <div class="w3-quarter w3-section">
+    <span class="w3-xlarge">Community Modes</span><br>
+    Elim + Assault
+  </div>
+  <div class="w3-quarter w3-section">
+    <a href="https://play.eslgaming.com/unrealtournament/north-america/" target="_blank"><span class="w3-xlarge">ESL Cups</span><br>
+    Monthly
+  </div></a>
+</div>
+
+<!-- Second Parallax Image with Portfolio Text -->
+<div class="bgimg-2 w3-display-container w3-opacity-min">
+  <div class="w3-display-middle">
+    <span class="w3-xxlarge w3-text-light-grey w3-wide">COMMUNITY SPOTLIGHT</span>
+  </div>
+</div>
+
+<!-- Container (Portfolio Section) -->
+<div class="w3-content w3-container w3-padding-64" id="portfolio">
+  <h3 class="w3-center">OUR WORK</h3>
+  <p class="w3-center"><em>Here are some of the latest community built commodities.<br> Click on the images to make them bigger</em></p><br>
+
+  <!-- Responsive Grid. Four columns on tablets, laptops and desktops. Will stack on mobile devices/small screens (100% width) -->
+  <div class="w3-row-padding w3-center">
+    <div class="w3-col m3">
+      <img src="{% static 'maga.jpg' %}"  style="width:100%" onclick="onClick(this)" class="w3-hover-opacity" alt="Make Unreal Great Again">
+    </div>
+
+    <div class="w3-col m3">
+      <img src="{% static 'vault.jpg' %}" style="width:100%" onclick="onClick(this)" class="w3-hover-opacity" alt="CTF-VaultCity">
+    </div>
+
+    <div class="w3-col m3">
+      <img src="{% static 'Deep.gif' %}" style="width:100%" onclick="onClick(this)" class="w3-hover-opacity" alt="DM-Deep by CaptainMigraine">
+    </div>
+
+    <div class="w3-col m3">
+      <img src="{% static 'Fantasmic.png' %}" style="width:100%" onclick="onClick(this)" class="w3-hover-opacity" alt="DM-SuperFantasmic by Trinatek">
+    </div>
+  </div>
+
+  <div class="w3-row-padding w3-center w3-section">
+  </div>
+</div>
+
+<!-- Modal for full size images on click-->
+<div id="modal01" class="w3-modal w3-black" onclick="this.style.display='none'">
+  <span class="w3-closebtn w3-text-white w3-opacity w3-hover-opacity-off w3-xxlarge w3-container w3-display-topright" title="Close Modal Image"><i class="fa fa-remove"></i></span>
+  <div class="w3-modal-content w3-animate-zoom w3-center w3-transparent w3-padding-64">
+    <img id="img01" class="w3-image">
+    <p id="caption" class="w3-opacity w3-large"></p>
+  </div>
+</div>
+
+<!-- Third Parallax Image with Portfolio Text -->
+<div class="bgimg-3 w3-display-container w3-opacity-min">
+  <div class="w3-display-middle">
+     <span class="w3-xxlarge w3-text-light-grey w3-wide">SERVER ADMINISTRATION</span>
+  </div>
+</div>
+
+<!-- Container (Contact Section) -->
+<div class="w3-content w3-container w3-padding-64" id="contact">
+  <h3 class="w3-center">Server Downloads</h3>
+  <p class="w3-center"><em>For the people who help make it happen!</em></p>
+  <div class="w3-row w3-padding-32 w3-section">
+    <div class="w3-col m4 w3-container">
+      <!-- Add Google Maps -->
+    </div>
+    <div class="w3-col m12 w3-container w3-section">
+      <center><a class="w3-button w3-col m4"  href="https://ut4pugs.us/redirect-maps" type="submit" target="_blank">Download Maps</a>
+      <a class="w3-button w3-col m4"  href="https://ut4pugs.us/redirect-mutators" type="submit" target="_blank">Download Mutators</a>
+      <a class="w3-button w3-col m4" href="https://ut4pugs.us/media/redirect.txt" type="submit" target="_blank">Download Partial Game.ini</a></center><br>
+      {% if user.is_staff %}
+      <a class="w3-button w3-col m4" href="https://ut4pugs.us/generate" type="submit" target="_blank">REGENERATE Game.ini</a> 
+      {% endif %} 
+    </div>
+  </div>
+</div>
+
+<!-- Footer -->
+<footer class="w3-center w3-black w3-padding-32 w3-opacity w3-hover-opacity-off">
+  <a href="#home" class="w3-button"><i class="fa fa-arrow-up w3-margin-right"></i>To the top</a>
+  <h4>This is a community site and is not affiliated with Epic Games or the Unreal Tournament brand in any way.</h4><br>
+  <div class="w3-xlarge w3-section">
+  </div>
+</footer>
+ 
+<!-- Add Google Maps -->
+<script>
+
+// Modal Image Gallery
+function onClick(element) {
+  document.getElementById("img01").src = element.src;
+  document.getElementById("modal01").style.display = "block";
+  var captionText = document.getElementById("caption");
+  captionText.innerHTML = element.alt;
+}
+
+// Change style of navbar on scroll
+window.onscroll = function() {myFunction()};
+function myFunction() {
+    var navbar = document.getElementById("myNavbar");
+    if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
+        navbar.className = "w3-bar" + " w3-card-2" + " w3-animate-top" + " w3-dark-grey";
+    } else {
+        navbar.className = navbar.className.replace(" w3-card-2 w3-animate-top w3-dark-grey", "");
+    }
+}
+
+// Used to toggle the menu on small screens when clicking on the menu button
+function toggleFunction() {
+    var x = document.getElementById("navDemo");
+    if (x.className.indexOf("w3-show") == -1) {
+        x.className += " w3-show";
+    } else {
+        x.className = x.className.replace(" w3-show", "");
+    }
+}
+</script>
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-1336662480779453",
+    enable_page_level_ads: true
+  });
+</script>
+</body>
+</html>
 
 {% endblock %}

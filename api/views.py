@@ -127,10 +127,14 @@ def get_pool(open_spaces):
 def redirect(request):
     if request.method == 'GET':
         maps = MapTable(Map.objects.all())
+        RequestConfig(request, paginate={'per_page': 100}).configure(maps)
+        return render(request, "redirect.html", {'maps': maps})
+
+def mutators(request):
+    if request.method == 'GET':
         mutators = MutatorTable(Mutator.objects.all())
-        RequestConfig(request).configure(maps)
-        RequestConfig(request).configure(mutators) 
-        return render(request, "redirect.html", {'maps': maps, 'mutators': mutators})
+        RequestConfig(request,paginate={'per_page': 100}).configure(mutators)
+        return render(request, "redirect.html", {'mutators': mutators})
 
 
 @login_required
@@ -171,7 +175,6 @@ def generate(request):
  
               
                      
-@csrf_exempt
 @login_required
 @user_passes_test(is_referee)
 def UploadView(request):
@@ -234,9 +237,13 @@ def UploadView(request):
 
 
 
-@login_required(login_url="/login/")
 def home(request):
-    return render(request,"home.html")
+    maps = MapTable(Map.objects.all())
+    mutators = MutatorTable(Mutator.objects.all())
+    RequestConfig(request).configure(maps)
+    RequestConfig(request).configure(mutators)
+    return render(request, "home.html", {'maps': maps, 'mutators': mutators})
+    #return render(request,"home.html")
 
 
 def player_mention(user_id):

@@ -65,7 +65,7 @@ class Game_ini(models.Model):
     file = models.FileField(null=False)
 
 class Map(models.Model):
-    name = models.CharField(max_length=72, primary_key=True)
+    name = models.CharField(max_length=75, primary_key=True)
     map_size = models.CharField(max_length=4, choices=Map_Size)
     mode = models.CharField(max_length=7, choices=Modes) 
     file = models.FileField(null=False, blank=False, default='')
@@ -99,7 +99,7 @@ post_save.connect(post_save_receiver, sender=Map)
 
 
 class Mutator(models.Model):
-    name = models.CharField(max_length=72, primary_key=True, unique=True)
+    name = models.CharField(max_length=75, primary_key=True, unique=True)
     description = models.CharField(max_length=50)
     file = models.FileField(null=False, blank=False, default='')
     MD5 = models.CharField(max_length=32, null=True, blank=True)

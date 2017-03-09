@@ -2,56 +2,109 @@
 
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                <title>UT4PugsBotV2</title>
-                <!-- Core CSS - Include with every page -->
-                <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
-                </head>
+
+    <title>UT4Pugs</title>
+    <meta charset="UTF-8">
+    <link rel="shortcut icon" type="image/png" href="http://findicons.com/files/icons/1742/ecqlipse_2/128/unreal_tournament.png"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://www.w3schools.com/lib/w3.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="shortcut icon" type="image/png" href="http://findicons.com/files/icons/1742/ecqlipse_2/128/unreal_tournament.png"/>
+<link rel="stylesheet" href="https://www.w3schools.com/lib/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'css/login.css' %}" rel="stylesheet"> 
+    <style>
+    body,h1,h2,h3,h4,h5,h6 {font-family: "Lato", sans-serif}
+    .w3-bar,h1,button {font-family: "Montserrat", sans-serif}
+    .fa-anchor,.fa-coffee {font-size:200px}
+    </style> 
+<style>
+.container {
+    overflow: hidden;
+    background-color: #333;
+    font-family: Arial;
+}
+
+.container a {
+    float: left;
+    font-size: 16px;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+.dropdown {
+    float: left;
+    overflow: hidden;
+}
+
+.dropdown .dropbtn {
+    font-size: 16px;    
+    border: none;
+    outline: none;
+    color: white;
+    padding: 14px 16px;
+    background-color: inherit;
+}
+
+.container a:hover, .dropdown:hover .dropbtn {
+    background-color: red;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.dropdown-content a {
+    float: none;
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    text-align: left;
+}
+
+.dropdown-content a:hover {
+    background-color: #ddd;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+</style>
                 <body>
-                    <nav class="navbar navbar-default">
-                        <div class="container-fluid">
-                            <div class="navbar-header">
-                                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                                    <span class="sr-only">Toggle navigation</span>
-                                    <span class="icon-bar"></span>
-                                    <span class="icon-bar"></span>
-                                    <span class="icon-bar"></span>
-                                </button>
-                                <a class="navbar-brand" href="/home">UT4 Pugs</a>
-                            </div>
-                            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                                <ul class="nav navbar-nav navbar-right">
-                                    <li class="dropdown">
-                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Account
-                                            <span class="caret"></span>
-                                        </a>
-                                        <ul class="dropdown-menu" role="menu">
-                                            <li>
-                                                <a href="/home">Home</a>
-                                            </li>
-                                            <li>
-                                                <a href="/generate">Generate</a>
-                                            </li>
-                                            {% if request.user.is_staff %}
-                                            <li>
-                                                <a href="/upload">Upload</a>
-                                            </li>
-                                            {% endif %}
-                                            <li>
-                                                <a href="/redirect">Redirect</a>
-                                            </li>
-                                            <li class="divider"></li>
-                                            <li>
-                                                <a href="/logout">Logout</a>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </nav>
+<div class="w3-top">
+<div class="w3-bar w3-dark-grey" id="myNavbar">
+<a class="w3-bar-item w3-button w3-hover-black w3-hide-medium w3-hide-large w3-opennav w3-right" href="javascript:void(0);" onclick="toggleFunction()" title="Toggle Navigation Menu">
+<i class="fa fa-bars"></i>
+</a>
+<a href="/home" class="w3-bar-item w3-button"><i class="glyphicon glyphicon-home"></i>HOME</a>
+<a href="https://ut4pugs.us/home#about" class="w3-bar-item w3-button w3-hide-small"><i class="fa fa-user"></i> ABOUT</a>
+<a href="https://ut4pugs.us/home#portfolio" class="w3-bar-item w3-button w3-hide-small"><i class="fa fa-th"></i> SPOTLIGHT</a>
+<a href="https://ut4pugs.us/home#contact" class="w3-bar-item w3-button w3-hide-small"><i class="glyphicon glyphicon-file"></i>SERVER ADMIN</a>
+<a href="/redirect" class="w3-bar-item w3-button w3-hide-small"><i class="glyphicon glyphicon-arrow-right"></i>REDIRECT</a>
+{% if not user.is_authenticated %}
+<a href="/login" class="w3-bar-item w3-button w3-hide-medium w3-right"><i class="glyphicon glyphicon-user"></i>LOGIN</a>
+{% elif user.is_authenticated %}
+<a href="/logout" class="w3-bar-item w3-button w3-hide-medium w3-right"><i class="glyphicon glyphicon-user"></i>LOGOUT</a>
+<a href="/upload" class="w3-bar-item w3-button w3-hide-small"><i class="glyphicon glyphicon-refresh"></i>UPLOAD</a>
+{% endif %}
+</div>
+</div>
+                 
 
                 {% block content %}
                 {% endblock %}
