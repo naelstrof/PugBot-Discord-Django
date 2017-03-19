@@ -5,9 +5,11 @@ from . import views
 # We are adding a URL called /home
 urlpatterns = [
     url(r'^$', views.home, name='home'),
+    url(r'^signup/?$', views.signup, name='signup'),
     url(r'^generate/?$', views.generate, name='generate'),
     url(r'^upload/?$', views.UploadView, name='UploadView'),
     url(r'^home/?$', views.home, name='home'),
+    url(r'^ctf-draft/?$', views.ctf_draft, name='ctf_draft'),
     url(r'^redirect-maps/?$', views.redirect, name='redirect'),
     url(r'^redirect/?$', views.redirect, name='redirect'),
     url(r'^redirect-mutators/?$', views.mutators, name='mutators'),

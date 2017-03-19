@@ -2,29 +2,32 @@ import datetime
 from django.db import models
 
 class Channel(models.Model):
-	name = models.CharField(max_length=60)
-	active = models.BooleanField(default=False)
-	tags = models.ManyToManyField('Tag',related_name='channels',blank=True)
-	logo = models.URLField(blank=True)
-	preview = models.URLField(blank=True)
-	game = models.CharField(max_length=60,blank=True)
-	live = models.BooleanField(default=False)
+        name = models.CharField(max_length=60)
+        active = models.BooleanField(default=False)
+        tags = models.ManyToManyField('Tag',related_name='channels',blank=True)
+        logo = models.URLField(blank=True)
+        preview = models.URLField(blank=True)
+        game = models.CharField(max_length=60,blank=True)
+        live = models.BooleanField(default=False)
 	
-	def __unicode__(self):
-		return self.name
+        def __unicode__(self):
+            return self.name
 
-	def image(self):
-		if self.live:
-			return self.preview
-		else:
-			return self.logo
+        def image(self):
+                 if self.live:
+                    return self.preview
+                 else:
+                    return self.logo
 
-	def current(self):
-		if len(self.tags.exclude(firstDate__gt=datetime.date.today()).exclude(lastDate__lt=datetime.date.today())) > 0:
-			return True
-		else:
-			return False
-
+        def current(self):
+                if len(self.tags.exclude(firstDate__gt=datetime.date.today()).exclude(lastDate__lt=datetime.date.today())) > 0:
+                    return True
+                else:
+                    return False
+        def __str__(self):
+            return '{}'.format(self.name)
+        class Meta:
+            verbose_name_plural = 'Twitch Channels'
 		
 class Tag(models.Model):
 	name = models.CharField(max_length=30)
@@ -49,5 +52,4 @@ class Tag(models.Model):
 			if self.lastDate < datetime.date.today():
 				c = False
 				
-		return c
-
+		return c     

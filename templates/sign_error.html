@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
-<head>
+<body>
 <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 <script>
   (adsbygoogle = window.adsbygoogle || []).push({
@@ -8,14 +8,9 @@
     enable_page_level_ads: true
   });
 </script>
-</head>
-<body>
-<br><br>
-<center>Game.ini Generator
-<form action="" method="post" enctype="multipart/form-data" target="_blank">
-    {% csrf_token %}
-<input type="submit" value="Generate"  />
-</center>
-</form>
+<br><br><div class='w3-row'>
+<h1>There was an error with your submission</h1>
+<p>Contact an administrator</p>
+</div>
 </body>
 {% endblock %}

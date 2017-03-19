@@ -12,6 +12,25 @@ Position_Choices = [
     ('Mid', 'Mid'),
     ('Offense', 'Offense'),
 ]
+
+Day_Choices = [
+    ('Friday', 'Friday'),
+    ('Saturday', 'Saturday'),
+    ('Sunday', 'Sunday'),
+]
+
+Time_Choices = [
+    ('Evenings', 'Evenings'),
+    ('Afternoons', 'Afternoons'),
+    ('Mornings', 'Mornings'),
+]
+
+Region_Choices = [
+    ('North America', 'North America'),
+    ('Europe', 'Europe'),
+    ('South America', 'South America'),
+    ('Central America', 'Central America'),
+]
   
 Map_Size = [
     ('1v1', '1v1'),
@@ -96,6 +115,24 @@ def post_save_receiver(sender, instance, *args, **kwargs):
         instance.MD5 = create_MD5(instance)
 
 post_save.connect(post_save_receiver, sender=Map)
+
+
+
+class SignUp(models.Model):
+    display_name = models.CharField(max_length=21, primary_key=True, unique=True)
+    epicID = models.CharField(max_length=32, unique=True)
+    position = models.CharField(max_length=10, default='Offense',choices=Position_Choices) 
+    day_most_available = models.CharField(max_length=8, default='Saturday', choices=Day_Choices)
+    time_most_available = models.CharField(max_length=13, default='Evenings', choices=Time_Choices)
+    region = models.CharField(max_length=17, default='North America', choices=Region_Choices)
+    email = models.EmailField(max_length=70, blank=False)
+    Availability_Explained = models.CharField(max_length=40, blank=True)
+    def __str__(self):
+        return '{}'.format(self.display_name)
+    class Meta:
+        verbose_name_plural = 'Signups'
+    
+    
 
 
 class Mutator(models.Model):

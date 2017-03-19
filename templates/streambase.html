@@ -13,7 +13,7 @@
 		<script type="text/javascript" src="{% static 'plugins.js' %}"></script>
 		<script type="text/javascript" src="{% static 'script.js' %}"></script>
 		<script type="text/javascript">
-			var base_url = "{{ base_url }}";
+			var base_url = "{{ base_url }}/multi/";
 			var player_objs = {};
 			var player_type = "{{ player_type }}";
 			var layout_groups = { {% for g in layout_groups %}{{ forloop.counter }}: { {% for l in g %}{{ l.index }}: {'haschat': {% if l.has_chat %}true{% else %}false{% endif %},},{% endfor %} },{% endfor %} };
@@ -25,6 +25,7 @@
 				}
 			);
 		</script>
+
 		{% block script %}
 		{% endblock script %}
 		<link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.css" />

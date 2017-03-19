@@ -1,4 +1,3 @@
-{# tutorial/templates/people.html #}
 {% extends 'base.html' %}
 {% block content %}
 {% load render_table from django_tables2 %}
@@ -54,23 +53,15 @@
 </script>
 </head>
     <body>
-   
+
     <center>
-        {% if maps %}
-        <h1 style="padding:40px;">Maps</h1>
-        <div class="w3-container"> 
-        <br> <a href="/redirect-mutators">Looking for mutators?</a> 
-        <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for a map" title="Type in a name">
-        </div>
-        {% render_table maps %}
-        <br><br>
-        {% elif mutators %}
-        <h1 style="padding:40px;">Mutators</h1>
+        {% if signups %}
+        <h1 style="padding:40px;">Signups</h1>
         <div class="w3-container">
-        <br> <a href="/redirect-maps">Looking for maps?</a>
-        <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for a mutator" title="Type in a name">
+        <br> <a href="/signup">Want to play?</a>
+        <input class="w3-responsive"type="text" id="myInput" onkeyup="myFunction()" placeholder="Browse players" title="Type in a name">
+        {% render_table signups  %}
         </div>
-        {% render_table mutators %}
     </center>
     </body>
     {% endif %}
@@ -97,3 +88,5 @@ function myFunction() {
 </script>
 </html>
 {% endblock %}
+                                                                                                                                                                               99,1          Bot
+

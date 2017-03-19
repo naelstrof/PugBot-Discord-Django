@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block content %}
+<body>
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-1336662480779453",
+    enable_page_level_ads: true
+  });
+</script>
+<div class="container w3-white">
+<div class="page-header">
+<center><h1 style="padding:40px;">CTF Draft League Signup</h1>
+<h4>
+</center>
+</div>
+<a href="https://ut4pugs.us/media/DraftRules.txt" class="w3-black w3-col m6 col-md-offset-3" target="_blank">DRAFT RULES</a>
+<div class="w3-row">
+<div class="w3-col m6 col-md-offset-3">
+<div class="panel panel-default">
+<div class="panel-heading w3-dark-grey">
+<h3 class="panel-title">Fill the form out entirely</h3></div>
+</div>
+<div class="panel-body">
+<form class='w3-form w3-card-6' action="" method="post">
+    {% csrf_token %}
+    {{ form }}
+    <br><center>
+    <input type="checkbox" name="rules_accetpance" value="Yes" required> I agree to abide by all rules defined above.<br>
+           <br> <input type="submit" value="Submit" /></center>
+</form>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+{% endblock %}

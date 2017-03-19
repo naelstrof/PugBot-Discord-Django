@@ -9,12 +9,12 @@ from django.http import JsonResponse
 from django_tables2 import RequestConfig
 from api.models import Player, Mode, Pug, Map, Mutator, Pick_Order, Game_ini 
 from rest_framework.decorators import api_view
-from api.tables import MapTable, MutatorTable
+from api.tables import MapTable, MutatorTable, SignUpTable
 #import duckduckgo
 from pprint import pprint
 import json
-from .forms import UploadForm
-from .models import Attachment
+from .forms import UploadForm, SignupForm
+from .models import *
 
 
 
@@ -129,6 +129,28 @@ def redirect(request):
         maps = MapTable(Map.objects.all())
         RequestConfig(request, paginate={'per_page': 100}).configure(maps)
         return render(request, "redirect.html", {'maps': maps})
+
+def ctf_draft(request):
+    if request.method == 'GET':
+        signups = SignUpTable(SignUp.objects.all())
+        RequestConfig(request, paginate={"per_page": 100}).configure(signups)
+        return render(request, "ctf_draft.html", {'signups': signups})
+
+
+def signup(request):
+    form = SignupForm
+    if request.method == 'GET':
+        contexts = {
+            "form": form,
+        }
+        return render(request, "signup_form.html", contexts)
+    if request.method == 'POST':
+        form_data = SignupForm(request.POST)
+        if form_data.is_valid():
+             new_signup  = form_data.save() 
+             return HttpResponseRedirect('https://ut4pugs.us/ctf-draft') 
+        else:
+             return render(request, 'sign_error.html')
 
 def mutators(request):
     if request.method == 'GET':

@@ -1,15 +1,22 @@
 {% extends "streambase.html" %}
 {% load staticfiles %}<
 {% block body %}
+<head>
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-1336662480779453",
+    enable_page_level_ads: true
+  });
+</script>
+</head>
 	<div id="contentwrapper" class="indextemplate">
-		<a id="logo" href="http://kbmod.com"></a>
 		<!--a id="sponsorlogo" target="_blank"></a-->
-		<form id="buildlayoutform" method="GET" action="{{ base_url }}view/">
+		<form id="buildlayoutform" method="GET" action="{{ base_url }}">
 			<div class="tabs">
 				<ul>
 					<li id="custom-tab-selector"><a href="#custom">Custom</a></li>
 					<li id="featured-tab-selector"><a href="#featured">Featured</a></li>
-					<li id="following-tab-selector"><a href="#following">Following</a></li>
 				</ul>
 				<div id="custom">
 					{% for stream_index in num_streams %}
@@ -66,27 +73,13 @@
 					{% endfor %}
 					</div>
 				</div>
-				<div id="following" class="clearfix">
-					<div class='authenticate twitch-widget not-authenticated'>
-						<div>Connect with Twitch to see your followed channels.</div>
-						<br />
-						<img class="connect-twitch" src="{% static 'images/connect-twitch.png' %}" />
-					</div>
-					<div id="followedlist" class='channellist twitch-widget authenticated'>
-						<div class='loading'>Loading...</div>
-					</div>
-				</div>
+			
 			</div>
 		<div id="submitbuttoncontainer" class='clearfix'><button id='clearbutton'>Clear</button><button id='cancelbutton'>Cancel</button><button type="submit" value="Watch Streams">Watch Streams</button></div>
 		<div style="clear:both;"></div>
 		<ul id="menu-primary-menu" class="menu">
-			<li><a href="//kbmod.com/" target="_blank">KBMOD</a> </li>
-			<li><a href="//kbmod.com/category/podcast/" target="_blank">Podcast</a> </li>
-			<li><a href="//kbmod.com/category/build-guides/" target="_blank">Build Guides</a> </li>
-			<li><a href="//kbmod.com/category/review/" target="_blank">Reviews</a> </li>
-			<li><a href="//kbmod.com/category/battlestations/" target="_blank">Battlestations</a> </li>
-			<li><a href="//kbmod.com/merch/" target="_blank">Merch</a> </li>
-			<li><a href="//kbmod.com/join-us/" target="_blank">Join Us</a> </li>
+			<li><a href="/home" target="_blank">UT4Pugs</a> </li>
+			<li><a href="/redirect" target="_blank">Redirects</a> </li>
 			<li class='tip'><!--em>Like Multistream?</em> <a class='bitcoin-tip'></a>/--><a href="https://github.com/seanbutnotheard/multistream/" target="_blank">Fork Me</a></li>
 		</ul>
 		</form>
