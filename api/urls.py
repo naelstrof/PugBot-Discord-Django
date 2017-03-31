@@ -26,4 +26,5 @@ urlpatterns = [
     url(r'^list_mode/?$', views.listing, name='listing'),
     url(r'^list_maps/?$', views.list_maps, name='list_maps'),
     url(r'^tag/?$', views.set_tag, name='set_tag'),
+    url(r'^setid/?$', views.setid, name='setid'),
 ]

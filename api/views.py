@@ -926,5 +926,32 @@ def listing(request):
                else:
                    return HttpResponse(json.dumps({'message_specific': 'Check your syntax friend, it seems you entered a nonexistent mode.'}))   
 
+@api_view(['POST'])
+def setid(request):
+    if request.user.is_authenticated():
+        incoming_message = json.loads(request.body.decode('utf-8'))
+        pprint(incoming_message)
+        for k,v  in incoming_message.items():
+            try:
+                arguments = msg.split()
+                if len(arguments) == 1:
+                    player_obj = Player.objects.get(user_id=k)
+                    player_obj.epic_id = None
+                    player_obj.save()
+                    return HttpResponse(json.dumps({'message': player_obj.username + '\'s Epic ID was removed.'}))
+                elif len(arguments) == 2:
+                    player_obj = Player.objects.get(user_id=k)
+                    player_obj.epic_id = arguments[1]
+                    player_obj.save()
+                    return HttpResponse(json.dumps({'message': player_obj.username + '\'s Epic ID was updated.'}))
+#                elif len(arguments) == 3:
+#                    player_obj = Player.objects.get(user_id=k)
+#                    target_obj = Player.objects.get(user_name=arguments[2])
+#                    target_obj.epic_id = arguments[2]
+#                    target_obj.save()
+#                    return HttpResponse(json.dumps({'message': target_obj.username + '\'s Epic ID was updated.'}))
+                else:
+                    return HttpResponse(json.dumps({'message': 'Wrong number of arguments to `.setid`, say `.help setid` for proper usage.'}))
 
-
+            except:
+                return HttpResponse(json.dumps({'message': 'Please use the register command first. (.register/.r)'}))        

@@ -360,6 +360,21 @@ class register:
                     await self.bot.say(response['message'])
 
         await resp.release() 
+
+    @commands.group(pass_context=True, no_pm=False, description='Usage: .setid [username] {EpicID}\nExample: .setid 1bc258e3a2194fa88fac3d06bc6da28a\nAssociates an Epic ID with a discord user. Allows for more informative print-outs for .stats.')
+    async def setid(self,ctx):
+        self.user_name = ctx.message.author
+        self.user_msg = ctx.message.content
+        self.user_id = ctx.message.author.id
+        self.url = 'https://ut4pugs.us/setid'
+        self.payload = {self.user_id: self.user_msg}
+        async with self.session.post(self.url, data=json.dumps(self.payload), headers=self.headers) as resp:
+            response = await resp.json()
+            print(response)
+            for k,v in response.items():
+                if k == 'message':
+                    await self.bot.say(response['message'])
+        await resp.release()     
   
     @register.command()
     async def changelog(self):
