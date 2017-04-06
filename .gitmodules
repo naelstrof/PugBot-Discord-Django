@@ -1,0 +1,3 @@
+[submodule "api/python-duckduckgo"]
+	path = api/python-duckduckgo
+	url = https://github.com/mikejs/python-duckduckgo.git
