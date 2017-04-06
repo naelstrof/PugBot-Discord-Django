@@ -1,3 +1,5 @@
+import os
+from django.conf import settings
 from django.db import models
 from django.forms import ModelForm
 from django.contrib.auth.models import User
@@ -97,7 +99,7 @@ class Map(models.Model):
         verbose_name_plural = 'Maps' 
 
 def create_MD5(instance=None, new_MD5=None):
-    MD5 = hashlib.md5(open('/home/pugbot/discord-pugbot/new-bot/djangobot/botapi/maps_muts/{}'.format(instance.file),'rb').read()).hexdigest()
+    MD5 = hashlib.md5(open((os.path.join(settings.BASE_DIR, settings.MEDIA_ROOT)+'{}').format(instance.file),'rb').read()).hexdigest()
 
     if new_MD5 is not None:
         MD5 = new_MD5
