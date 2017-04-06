@@ -88,7 +88,7 @@ body, html {
     {% if not user.is_authenticated %} 
     <a href="/login" class="w3-bar-item w3-button w3-hide-small">LOGIN</a>
     {% elif user.is_authenticated %}
-    <a href="https://ut4pugs.us/media/logout" class="w3-bar-item w3-button w3-hide-medium w3-right" target="_blank">LOGOUT</a>
+    <a href="/media/logout" class="w3-bar-item w3-button w3-hide-medium w3-right" target="_blank">LOGOUT</a>
     {% endif %}
 
   </div>
@@ -198,11 +198,11 @@ body, html {
       <!-- Add Google Maps -->
     </div>
     <div class="w3-col m12 w3-container w3-section">
-      <center><a class="w3-button w3-col m4"  href="https://ut4pugs.us/redirect-maps" type="submit" target="_blank">Download Maps</a>
-      <a class="w3-button w3-col m4"  href="https://ut4pugs.us/redirect-mutators" type="submit" target="_blank">Download Mutators</a>
-      <a class="w3-button w3-col m4" href="https://ut4pugs.us/media/redirect.txt" type="submit" target="_blank">Download Partial Game.ini</a></center><br>
+      <center><a class="w3-button w3-col m4"  href="/redirect-maps" type="submit" target="_blank">Download Maps</a>
+      <a class="w3-button w3-col m4"  href="/redirect-mutators" type="submit" target="_blank">Download Mutators</a>
+      <a class="w3-button w3-col m4" href="/redirect.txt" type="submit" target="_blank">Download Partial Game.ini</a></center><br>
       {% if user.is_staff %}
-      <a class="w3-button w3-col m4" href="https://ut4pugs.us/generate" type="submit" target="_blank">REGENERATE Game.ini</a> 
+      <a class="w3-button w3-col m4" href="/generate" type="submit" target="_blank">REGENERATE Game.ini</a> 
       {% endif %} 
     </div>
   </div>
