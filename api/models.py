@@ -58,6 +58,7 @@ Captain_Colors = [
 
 class Player(models.Model):
     user_id = models.CharField(max_length=30, primary_key=True, unique=True)
+    epic_id = models.CharField(max_length=32, null=True, blank=True) 
     username = models.CharField(max_length=45)
     role = models.CharField(max_length=19, null=True, blank=True) 
     wins = models.PositiveIntegerField(default=0)
