@@ -1,4 +1,5 @@
 from discord.ext import commands
+import traceback
 import aiohttp
 import json
 import discord
@@ -11,14 +12,34 @@ MODSEP = '\N{SMALL BLUE DIAMOND}'
 OKMSG = '\N{OK HAND SIGN}'
 BASEURL = 'https://ut4pugs.us'
 #BASEURL = 'http://localhost:8080'
+DEBUG = True
 
 class register:
     """Unreal Tournament 4 related commands"""
     def __init__(self, bot):
         self.bot = bot
         self.session = aiohttp.ClientSession()       
-        self.token = 'Token ' 
+        self.token = 'Token {YOUR TOKEN HERE}' 
         self.headers = {'content-type': 'application/json', 'Authorization': self.token}
+
+    async def processRequest(self, ctx):
+        try:
+            async with self.session.post(self.url, data=json.dumps(self.payload), headers=self.headers) as resp:
+                response = await resp.json()
+                if 'message' in response:
+                    await self.bot.say(response['message'])
+                if 'detail' in response:
+                    await self.bot.say('Failed to process request: '+response['detail'])
+                if 'message_specific' in response:
+                    await self.bot.say(response['message_specific'])      
+                if 'message_general' in response:
+                    await self.bot.say(response['message_general'])
+            await resp.release() 
+        except Exception as inst:
+            if DEBUG:
+                await self.bot.say('Failed to process that request: Raised error ' + str(type(inst)) + '\n```\n'+ str(inst)+'\n```' + '```\n'+traceback.format_exc()+'\n```')
+            else:
+                await self.bot.say('Failed to process that request.')
 
     @commands.group(pass_context=True, no_pm=False, aliases=['r'])
     async def register(self,ctx):
@@ -27,20 +48,7 @@ class register:
         self.user_id = ctx.message.author.id
         self.url = BASEURL + '/discord'
         self.payload = {'registration': {'username': '{}'.format(self.user_name), 'user_id': str(self.user_id), 'role': ctx.message.author.top_role.name, 'message': str(self.user_msg)}}
-        async with self.session.post(self.url, data=json.dumps(self.payload), headers=self.headers) as resp:
-            try:
-                response = await resp.json()
-                for k,v in response.items():
-                    if k == 'message':
-                        await self.bot.say(response['message'])
-            except:
-                response = await resp.text()
-                f = open('loggg', 'w')
-                f.write(response)
-                f.close()
-                await self.bot.say("Sorry, I failed to register you!")
-            print(response)
-        await resp.release()
+        await self.processRequest(ctx)
     
     @commands.group(pass_context=True, no_pm=False)
     async def search(self,ctx):
@@ -59,13 +67,7 @@ class register:
         self.user_id = ctx.message.author.id
         self.url = BASEURL + '/tag'
         self.payload = {self.user_id: self.user_msg}
-        async with self.session.post(self.url, data=json.dumps(self.payload), headers=self.headers) as resp:
-            response = await resp.json()
-            print(response)
-            for k,v in response.items():
-                if k == 'message':
-                    await self.bot.say(response['message'])
-        await resp.release() 
+        await self.processRequest(ctx)
        
     @commands.group(pass_context=True, no_pm=True, aliases=['notag'])
     async def deltag(self,ctx):
@@ -74,13 +76,7 @@ class register:
         self.user_id = ctx.message.author.id
         self.url = BASEURL + '/tag'
         self.payload = {self.user_id: self.user_msg}
-        async with self.session.post(self.url, data=json.dumps(self.payload), headers=self.headers) as resp:
-            response = await resp.json()
-            print(response)
-            for k,v in response.items():
-                if k == 'message':
-                    await self.bot.say(response['message'])
-        await resp.release() 
+        await self.processRequest(ctx)
     
     @commands.group(pass_context=True, no_pm=True)
     async def nomic(self,ctx):
@@ -89,13 +85,7 @@ class register:
         self.user_id = ctx.message.author.id
         self.url = BASEURL + '/tag'
         self.payload = {self.user_id: self.user_msg}
-        async with self.session.post(self.url, data=json.dumps(self.payload), headers=self.headers) as resp:
-            response = await resp.json()
-            print(response)
-            for k,v in response.items():
-                if k == 'message':
-                    await self.bot.say(response['message'])
-        await resp.release()
+        await self.processRequest(ctx)
 
     async def on_member_update(self, before, after):
         if after.status is discord.Status.offline: 
@@ -120,13 +110,7 @@ class register:
         self.user_id = ctx.message.author.id
         self.url = BASEURL + '/map'
         self.payload = {'map': self.user_msg}
-        async with self.session.post(self.url, data=json.dumps(self.payload), headers=self.headers) as resp:
-            response = await resp.json()
-            print(response)
-            for k,v in response.items():
-                if k == 'message':
-                    await self.bot.say(response['message'])
-        await resp.release()     
+        await self.processRequest(ctx)
 
     @commands.group(pass_context=True, no_pm=False)
     async def maps(self,ctx):
@@ -135,13 +119,7 @@ class register:
         self.user_id = ctx.message.author.id
         self.url = BASEURL + '/list_maps'
         self.payload = {'maps': self.user_msg}
-        async with self.session.post(self.url, data=json.dumps(self.payload), headers=self.headers) as resp:
-            response = await resp.json()
-            print(response)
-            for k,v in response.items():
-                if k == 'message':
-                    await self.bot.say(response['message'])
-        await resp.release() 
+        await self.processRequest(ctx)
 
     @commands.group(pass_context=True, no_pm=False)
     async def mutator(self,ctx):
@@ -150,13 +128,7 @@ class register:
         self.user_id = ctx.message.author.id
         self.url = BASEURL + '/get_mutator'
         self.payload = {'mutator': self.user_msg}
-        async with self.session.post(self.url, data=json.dumps(self.payload), headers=self.headers) as resp:
-            response = await resp.json()
-            print(response)
-            for k,v in response.items():
-                if k == 'message':
-                    await self.bot.say(response['message'])
-        await resp.release()  
+        await self.processRequest(ctx)
 
     @commands.group(pass_context=True, no_pm=True, aliases=['ls'])
     async def list(self,ctx):
@@ -170,15 +142,7 @@ class register:
         else:
             self.url = BASEURL + '/list_mode' 
             self.payload = {'list_mode': self.user_msg}   
-        async with self.session.post(self.url, data=json.dumps(self.payload), headers=self.headers) as resp: 
-            response = await resp.json() 
-            print(response)
-            for k,v in response.items():
-                if k == 'message_specific':
-                    await self.bot.say(response['message_specific'] + PLASEP)      
-                elif k == 'message_general':
-                    await self.bot.say(response['message_general'])
-        await resp.release()
+        await self.processRequest(ctx)
 
     async def handle_response(self,response):
             for k,v in response.items():
@@ -275,8 +239,7 @@ class register:
         self.user_id = ctx.message.author.id
         self.url = BASEURL + '/picking'
         self.payload = {self.user_id: self.user_msg}
-        async with self.session.post(self.url, data=json.dumps(self.payload), headers=self.headers) as resp:
-            response = await resp.json() 
+        await self.processRequest(ctx)
         
 
     @commands.group(pass_context=True, no_pm=True, aliases=['j'])
@@ -293,7 +256,7 @@ class register:
             for k,v in response.items():
                 if k == 'message':
                     await self.bot.say(v)
-                else:
+                elif k == 'filled':
                     self.players, self.pug_id, self.mode, self.players_list = await self.handle_response(response) 
                     self.players_str = ' '.join(self.players)
                     await self.bot.say('**' + self.mode + '** has been filled. \n ' + self.players_str)
@@ -307,14 +270,7 @@ class register:
         self.user_id = ctx.message.author.id
         self.url = BASEURL + '/leave'
         self.payload = {self.user_id: self.user_msg}
-        async with self.session.post(self.url, data=json.dumps(self.payload), headers=self.headers) as resp:
-            response = await resp.json()
-            print(response)
-            for k,v in response.items():
-                if k == 'message':
-                    await self.bot.say(response['message'])
-
-        await resp.release() 
+        await self.processRequest(ctx)
  
     @commands.group(pass_context=True, no_pm=True, aliases=['pro'])
     async def promote(self,ctx):
@@ -323,13 +279,7 @@ class register:
         self.user_id = ctx.message.author.id
         self.url = BASEURL + '/list_mode'
         self.payload = {'list_mode': self.user_msg}
-        async with self.session.post(self.url, data=json.dumps(self.payload), headers=self.headers) as resp:
-            response = await resp.json()
-            for k,v in response.items():
-                if k == 'message_specific':
-                    await self.bot.say('@here '+ response['message_specific'])
-
-        await resp.release()
+        await self.processRequest(ctx)
     
     @commands.group(pass_context=True, no_pm=True)
     async def lva(self,ctx):
@@ -338,14 +288,7 @@ class register:
         self.user_id = ctx.message.author.id
         self.url = BASEURL + '/leave'
         self.payload = {self.user_id: self.user_msg}
-        async with self.session.post(self.url, data=json.dumps(self.payload), headers=self.headers) as resp:
-            response = await resp.json()
-            print(response)
-            for k,v in response.items():
-                if k == 'message':
-                    await self.bot.say(response['message'])
-
-        await resp.release() 
+        await self.processRequest(ctx)
 
     @commands.group(pass_context=True, no_pm=False, description='Usage: .setid [username] {EpicID}\nExample: .setid 1bc258e3a2194fa88fac3d06bc6da28a\nAssociates an Epic ID with a discord user. Allows for more informative print-outs for .stats.')
     async def setid(self,ctx):
@@ -354,13 +297,7 @@ class register:
         self.user_id = ctx.message.author.id
         self.url = BASEURL + '/setid'
         self.payload = {self.user_id: self.user_msg}
-        async with self.session.post(self.url, data=json.dumps(self.payload), headers=self.headers) as resp:
-            response = await resp.json()
-            print(response)
-            for k,v in response.items():
-                if k == 'message':
-                    await self.bot.say(response['message'])
-        await resp.release()     
+        await self.processRequest(ctx)
   
     @register.command()
     async def changelog(self):

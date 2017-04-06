@@ -1,13 +1,15 @@
 import os
+from django.conf import settings
+
+PROJECT_NAME = 'botapi'
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 SESSION_COOKIE_AGE = 900
 SESSION_SAVE_EVERY_REQUEST = True
-SECURE_SSL_REDIRECT = True
+#SECURE_SSL_REDIRECT = True
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/
 
@@ -28,7 +30,7 @@ def find_or_create_secret_key():
         from django.utils.crypto import get_random_string
         chars = 'abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)'
         new_key = get_random_string(50, chars)
-        with file(secret_key_filepath, 'w') as f:
+        with open(secret_key_filepath, 'w') as f:
             f.write("# Django secret key\n# Do NOT check this into version control.\n\nSECRET_KEY = '%s'\n" % new_key)
         from secret_key import SECRET_KEY
         return SECRET_KEY
@@ -42,17 +44,20 @@ ALLOWED_HOSTS = ['*']
 LOGIN_REDIRECT_URL = '/home'
 LOGIN_URL = '/login/'
 
-
 # Application definition
 
 INSTALLED_APPS = [
-    'YOUR_PROJ',
+    PROJECT_NAME,
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_tables2',
+    'captcha',
+    'api',
+    'twitchstreams',
     'rest_framework',
     'rest_framework.authtoken',
 ]
@@ -67,12 +72,16 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'YOUR_PROJ.urls'
+ROOT_URLCONF = PROJECT_NAME+'.urls'
 PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
-STATIC_ROOT = 'somedir/static'
-STATICFILES_DIRS = [
-os.path.join(BASE_DIR, "static"),
-]
+STATIC_URL = '/static/'
+STATIC_ROOT = 'static/'
+MEDIA_URL = '/media/'
+MEDIA_ROOT = 'media/'
+SITE_ROOT = os.path.dirname(os.path.realpath(__file__))
+STATICFILES_DIRS = (
+  os.path.join(SITE_ROOT, 'static/'),
+)
 
 TEMPLATES = [
     {
@@ -90,7 +99,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'YOUR_PROJ.wsgi.application'
+WSGI_APPLICATION = PROJECT_NAME+'.wsgi.application'
 
 
 # Database
@@ -136,7 +145,6 @@ APPEND_SLASH = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
-STATIC_URL = '/static/'
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.TokenAuthentication',
@@ -145,4 +153,3 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticated',
     ),
 }
-       

@@ -860,7 +860,10 @@ def list_all(request):
                     pug_response.pop()
                 resp = ' '.join(pug_response) 
             
-            return HttpResponse(json.dumps({'message_general': resp}))    
+            try:
+                return HttpResponse(json.dumps({'message_general': resp}))    
+            except:
+                return HttpResponse(json.dumps({'message_general': "No pugs available."}))    
 
 @api_view(['POST'])
 def listing(request):

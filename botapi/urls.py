@@ -29,9 +29,10 @@ urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^login/$', views.login, {'template_name': 'login.html', 'authentication_form': LoginForm}, name='login'),
     url(r'^logout/$', views.logout, {'next_page': '/login'}),
+    #url(r'^static/(?P<path>.*)$', 'django.views.static.serve', {'document_root', settings.STATIC_ROOT} ),
 #    url(r'^forum/', include('paiji2_forum.urls')),
 ]
 #urlpatterns += static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
 #if settings.DEBUG:
-#   urlpatterns += static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
-#   urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+urlpatterns += static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
